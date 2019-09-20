@@ -1,0 +1,33 @@
+{
+  "name": "babel-plugin-transform-named-parameters",
+  "version": "7.4.4",
+  "description": "Compile ES2015 default and rest parameters to ES5",
+  "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-parameters",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "bundle.js",
+  "dependencies": {
+    "@babel/helper-call-delegate": "^7.4.4",
+    "@babel/helper-get-function-arity": "^7.0.0",
+    "@babel/helper-plugin-utils": "^7.0.0",
+    "rollup": "^1.21.4"
+  },
+  "keywords": [
+    "babel-plugin"
+  ],
+  "peerDependencies": {
+    "@babel/core": "^7.0.0-0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.6.0",
+    "@babel/core": "^7.6.0",
+    "@babel/helper-plugin-test-runner": "^7.0.0",
+    "@babel/preset-env": "^7.6.0"
+  },
+  "scripts": {
+    "watch": "rollup src/index.js --format cjs --file bundle.js -w",
+    "babel:watch": "babel src/index.js --watch --out-file index.js"
+  }
+}
