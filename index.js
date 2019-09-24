@@ -1,9 +1,17 @@
 // import { declare } from "@babel/helper-plugin-utils";
 
-function setArgument(position, idx, newArguments, paramName) {
+function setArgument(value, idx, newArguments, paramName) {
   if (newArguments[idx] !== undefined) {
     throw new Error(`${paramName} is already defined with value ${newArguments[idx]}`);
   }
+
+  if (idx > newArguments.length) {
+    throw new Error(`No such argument named ${paramName} is present.`);
+  }
+
+  newArguments[idx] = new value.constructor();
+  newArguments[idx].type = value.type;
+  newArguments[idx].value = value.value;
 };
 
 module.exports = function({ types: t }) {
@@ -20,15 +28,18 @@ module.exports = function({ types: t }) {
           paramsPostion.push(p.name);
         });
 
-        const newArguments = [].fill(params.length);
+        const newArguments = [];
+        newArguments.length = paramsPostion.length;
 
         currentArguments.forEach((arg, idx) => {
-          if (t.isAssignmentExpression(arg) && t.isIdentifier(arg.left.node)) {
-            setArgument(arg.right.node.value, paramsPostion.indexOf(arg.left.node.name), newArguments, arg.left.node.name);
+          if (t.isAssignmentExpression(arg) && t.isIdentifier(arg.left)) {
+            setArgument(arg.right, paramsPostion.indexOf(arg.left.name), newArguments, arg.left.name);
           } else {
             setArgument(arg, idx, newArguments, paramsPostion[idx].name);
           }
         });
+
+        path.node.arguments = newArguments;
        }
      }
     }

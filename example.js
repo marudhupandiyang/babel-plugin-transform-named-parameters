@@ -4,19 +4,19 @@ const namedParamertsRewrite = require('./index');
 const tests = [
   {
     input: `
-    function hello(firstName, lastName) {
-      console.log(firstName, lastName);
-    }
+function hello(firstName, lastName) {
+  console.log(firstName, lastName);
+}
 
-    hello(lastName = 'Marudhu', firstName = 'Pandiyan');
-    `,
+hello(lastName = 'Pandiyan', firstName = 'Marudhu');
+`,
       output: `
-    function hello(firstName, lastName) {
-      console.log(firstName, lastName);
-    }
+function hello(firstName, lastName) {
+  console.log(firstName, lastName);
+}
 
-    hello('Marudhu', 'Pandiyan');
-    `,
+hello("Marudhu", "Pandiyan");
+`,
   }
 ];
 
@@ -29,8 +29,13 @@ const babelOptions = {
 for(let i = 0; i < tests.length; i += 1) {
   try {
     const result = babel.transformSync(tests[i].input, babelOptions);
-    // console.log(JSON.stringify(result, 2));
+    if (result.code.trim() === tests[i].output.trim()) {
+      console.log(`Test ${i + 1} Passed.`);
+    } else {
+      throw new Error(`Failed Matching \ninput: ${tests[i].input}\n\nActual: ${result.code}\n\nExpected: ${tests[i].output}`);
+    }
   } catch (ex) {
+    console.log(`Test ${i} Failed.`, ex);
     console.error(`Error while executing ${i}`, ex);
   }
 }
