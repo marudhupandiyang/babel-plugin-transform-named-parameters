@@ -12,7 +12,7 @@ Using npm:
 npm install --save-dev @babel/plugin-transform-parameters
 ```
 
-or using yarn:
+or by using yarn:
 
 ```sh
 yarn add @babel/plugin-transform-parameters --dev
